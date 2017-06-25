@@ -319,13 +319,15 @@ void wynik_testu(float& wielkosc_testu, float& dobre)
 int main(int argc, char* argv[])
 {
     QCoreApplication a(argc, argv);
-
+    /*
     std::cout << "Nazwa programu to: " << argv[0] << std::endl;
     std::cout << "Pozostale jego parametry:\n";
     for(int i = 1; i < argc; i++)
     {
         std::cout << "Parametr nr. " << i << " to: " << argv[i] << std::endl;
     }
+    */
+
     bool koniec = 0;
     auto para_slownikow = wczytaj_slowa_z_pliku(PLIK_SLOWNIK);
     // void (*wsk_funk)(std::string);
