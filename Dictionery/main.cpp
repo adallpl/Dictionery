@@ -40,12 +40,12 @@ void zapisz_caly_slownik_do_pliku(Slownik& slownik, const std::string& nazwa_pli
     }
     if (!od)
     {
-        std::cout << "Saving words failed !" << std::endl;
+        std::cout << "Nie udalo sie zapisac slow do pliku" << std::endl;
         exit(1);
     }
     else
     {
-        std::cout << "Words saved correctly :)" << std::endl;
+        std::cout << "Zapisano slownik do pliku" << std::endl;
     }
 }
 
@@ -68,7 +68,7 @@ std::pair<Slownik, Slownik> wczytaj_slowa_z_pliku(const std::string& nazwa_pliku
     // najpierw wczytujemy liczbe slow
     /*if (!od.good())
     {
-        std::cerr << "Words loading failed!\n";
+        std::cerr << "Nie udalo sie wczytac slow z pliku\n";
        std::cerr << od.rdstate();
         exit(1);
     }*/
@@ -99,11 +99,11 @@ void wyswietl_tlumaczenie(const std::string& szukany, ParaSlownikow& para)
     }
     else if (para.second.find(szukany) != std::end(para.second))
     {
-        std::cout << "Translation:   " << para.second[szukany] << std::endl;
+        std::cout << "Tlumaczenie:   " << para.second[szukany] << std::endl;
     }
     else
     {
-        std::cout << "No translation found" << std::endl;
+        std::cout << "Nie znaleziono tlumaczenia" << std::endl;
     }
 }
 
@@ -175,11 +175,11 @@ void poprawa_literowki(ParaSlownikow& para,
         // analogicznie jesli to slowo angielskie
         popraw_slowo(para.second, para.first);
         zapisz_caly_slownik_do_pliku(para.first, PLIK_SLOWNIK);
-        std::cout << "Improved :-)!" << std::endl;
+        std::cout << "Poprawiono :-)!" << std::endl;
     }
     else
     {
-        std::cout << "No words found" << poprzednia_wersja << std::endl;
+        std::cout << "Nie znaleziono slowa: " << poprzednia_wersja << std::endl;
     }
 }
 Slownik slownik;
@@ -313,34 +313,33 @@ void test_slow(float& dobre, ParaSlownikow& para, std::string& slowo_uzytk, floa
 void wynik_testu(float& wielkosc_testu, float& dobre)
 {
     float wynik = dobre/wielkosc_testu;
-    std::cout<<"Your score:  "<<dobre<<"/"<<wielkosc_testu<<" ";
+    std::cout<<"Twoj wynik to:  "<<dobre<<"/"<<wielkosc_testu<<" ";
     std::cout<<(wynik*100.0)<<" %"<<std::endl;
 }
 int main(int argc, char* argv[])
 {
-    QCoreApplication a(argc, argv);
+     QCoreApplication a(argc, argv);
     /*
-    std::cout << "Program name: " << argv[0] << std::endl;
-    std::cout << "Additional parameters\n";
+    std::cout << "Nazwa programu to: " << argv[0] << std::endl;
+    std::cout << "Pozostale jego parametry:\n";
     for(int i = 1; i < argc; i++)
     {
-        std::cout << "Parameter number. " << i << " is: " << argv[i] << std::endl;
+        std::cout << "Parametr nr. " << i << " to: " << argv[i] << std::endl;
     }
     */
-
     bool koniec = 0;
     auto para_slownikow = wczytaj_slowa_z_pliku(PLIK_SLOWNIK);
     // void (*wsk_funk)(std::string);
     while (!koniec)
     {
-        std::cout<<"Dictionary database: "<<wiel_kon(PLIK_SLOWNIK)<<std::endl;
-        std::cout << "1. Dictionery" << std::endl;
-        std::cout << "2. Add word" << std::endl;
-        std::cout << "3. Show dictionery" << std::endl;
-        std::cout << "4. Generate a page" << std::endl;
+        std::cout<<"Baza slowek: "<<wiel_kon(PLIK_SLOWNIK)<<std::endl;
+        std::cout << "1. Slownik" << std::endl;
+        std::cout << "2. Dodaj do slownika" << std::endl;
+        std::cout << "3. Pokaz slownik" << std::endl;
+        std::cout << "4. Wygenerowanie strony" << std::endl;
         std::cout << "5. Exit" << std::endl;
-        std::cout << "6. Show words on letter" << std::endl;
-        std::cout << "7. Correct typo" << std::endl;
+        std::cout << "6. Wyswietl slowa na dana litere" << std::endl;
+        std::cout << "7. Popraw literowke" << std::endl;
         std::cout << "8. Test" << std::endl;
         char wybor = '\0';
         std::cin >> wybor;
@@ -351,7 +350,7 @@ int main(int argc, char* argv[])
         case '1':
         {
             std::string szukany;
-            std::cout << "Searched word: ";
+            std::cout << "Szukany wyraz: ";
             std::cin >> szukany;
             wyswietl_tlumaczenie(szukany, para_slownikow);
             break;
@@ -360,10 +359,10 @@ int main(int argc, char* argv[])
         {
             std::string PL;
             std::string ENG;
-            std::cout << "Type polish word" << std::endl;
+            std::cout << "Podaj PL" << std::endl;
             getline(std::cin, PL);
             getline(std::cin, PL);
-            std::cout << "Type english word" << std::endl;
+            std::cout << "Podaj ENG" << std::endl;
             getline(std::cin, ENG, '\n');
             dodaj_slowo_do_slownika(PL, ENG, para_slownikow);
             dopisz_slowo_do_pliku(PL, ENG, PLIK_SLOWNIK);
@@ -371,7 +370,7 @@ int main(int argc, char* argv[])
         }
         case '3':
         {
-            std::cout << "\n-----DICTIONERY-----\n" << std::endl;
+            std::cout << "\n-----SLOWNIK-----\n" << std::endl;
             wyswietl_slowa_na_litere(para_slownikow);
             std::cout << std::endl;
             break;
@@ -384,7 +383,7 @@ int main(int argc, char* argv[])
 
             if (od.good()==false)
             {
-                std::cout << "No word!";
+                std::cout << "Plik nie istnieje!";
                 exit(1);
             }
             //html(od,tab,roz);
@@ -401,15 +400,15 @@ int main(int argc, char* argv[])
 
         case '6':
         {
-            std::cout<<"Point dictionery:"<<std::endl;
-            std::cout<<"1 - polish"<<std::endl;
-            std::cout<<"2 - english"<<std::endl;
+            std::cout<<"Podaj slownik:"<<std::endl;
+            std::cout<<"1 - polski"<<std::endl;
+            std::cout<<"2 - angielski"<<std::endl;
             int wyb;
             std::cin>>wyb;
             if(wyb==1)
             {
                 char litera = '\0';
-                std::cout << "Enter a letter from where the word begins: ";
+                std::cout << "Podaj litere, od ktorej maja zaczynac sie wyswietlone slowa: ";
                 std::cin >> litera;
                 wyswietl_slowa_na_litere(para_slownikow, litera);
 
@@ -417,7 +416,7 @@ int main(int argc, char* argv[])
             else if(wyb==2)
             {
                 char litera = '\0';
-                std::cout << "Enter a letter from where the word begins: ";
+                std::cout << "Podaj litere, od ktorej maja zaczynac sie wyswietlone slowa: ";
                 std::cin >> litera;
                 wyswietl_slowa_na_litere(para_slownikow, litera, false);
             }
@@ -431,9 +430,9 @@ int main(int argc, char* argv[])
         {
             std::string stara;
             std::string nowa;
-            std::cout << "Enter the word in which you want to correct a typo: ";
+            std::cout << "Podaj slowo, w ktorym chcesz poprawic literowke: ";
             std::cin >> stara;
-            std::cout << "Enter correct version: ";
+            std::cout << "Podaj poprawiona wersje: ";
             std::cin >> nowa;
             poprawa_literowki(para_slownikow, stara, nowa);
             break;
@@ -441,13 +440,13 @@ int main(int argc, char* argv[])
         case '8':
         {
             float dobre = 0.0;
-            std::cout<<"1 - english - polish"<<std::endl;
-            std::cout<<"2 - polish - english"<<std::endl;
+            std::cout<<"1 - angielsko-polski"<<std::endl;
+            std::cout<<"2 - polsko-angielski"<<std::endl;
             int wyb;
             std::cin >> wyb;
             if(wyb==1)
             {
-                std::cout<<"Enter number of words in test"<<std::endl;
+                std::cout<<"Podaj ilosc slowek w tescie"<<std::endl;
                 float wielkosc_testu;
                 std::cin>>wielkosc_testu;
                 std::string slowo_uzytk;
@@ -456,7 +455,7 @@ int main(int argc, char* argv[])
             }
             else if(wyb==2)
             {
-                std::cout<<"Enter number of words in test"<<std::endl;
+                std::cout<<"Podaj ilosc slowek w tescie"<<std::endl;
                 float wielkosc_testu;
                 std::cin>>wielkosc_testu;
                 std::string slowo_uzytk;
@@ -466,7 +465,7 @@ int main(int argc, char* argv[])
             break;
         }
         default:
-            std::cout << "Incorrect key pressed" << std::endl;
+            std::cout << "Wcisnieto niewlasciwy klawisz" << std::endl;
         }
     }
     return a.exec();
